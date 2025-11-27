@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+cout<<"welcome to (x,o) game:"<<endl;
+cout<<"let's know the slot indix:"<<endl;
+
+int main() {
+    char g[3][3] = {
+        {'1','2','3'},
+        {'4','5','6'},
+        {'7','8','9'}
+    };
+
+    int choice;
+    int row, col;
+    char mark;
+
+    // نكرر اللعبة بحد أقصى 9 مرات
+    for (int player = 0; player < 9; player++) {
+
+        // تحديد اللاعب
+        if (player % 2 == 0)
+            mark = 'X';    // الأعداد الزوجية: X
+        else
+            mark = 'O';    // الفردية: O
+
+        // طباعة البورد
+        cout << "\n\n";
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                cout << g[i][j] << " ";
+            }
+            cout << endl;
+        }
+
+        // إدخال اللاعب
+        cout << "\nPlayer " << mark << ", enter a slot (1-9): ";
+        cin >> choice;
+
+        // تحويل الرقم إلى row و col
+        row = (choice - 1) / 3;
+        col = (choice - 1) % 3;
+
+        // التأكد إن الخانة فاضية
+        if (g[row][col] == 'X' || g[row][col] == 'O') {
+            cout << "This slot is already taken! Try again.\n";
+            player--; // نرجّع الدور لنفس اللاعب
+            continue;
+        }
+
+        // وضع العلامة
+        g[row][col] = mark;
+
+        // التحقق من الفوز
+        // صفوف
+        for (int i = 0; i < 3; i++) {
+            if (g[i][0] == mark && g[i][1] == mark && g[i][2] == mark) {
+                cout << "\nPlayer " << mark << " wins!\n";
+                return 0;
+            }
+        }
+
+        // أعمدة
+        for (int i = 0; i < 3; i++) {
+            if (g[0][i] == mark && g[1][i] == mark && g[2][i] == mark) {
+                cout << "\nPlayer " << mark << " wins!\n";
+                return 0;
+            }
+        }
+
+        // قطر
+        if (g[0][0] == mark && g[1][1] == mark && g[2][2] == mark) {
+            cout << "\nPlayer " << mark << " wins!\n";
+            return 0;
+        }
+
+        // قطر عكسي
+        if (g[0][2] == mark && g[1][1] == mark && g[2][0] == mark) {
+            cout << "\nPlayer " << mark << " wins!\n";
+            return 0;
+        }
+    }
+
+    // لو خلصت الـ 9 لَفّات → تعادل
+    cout << "\nIt's a draw!\n";
+    return 0;
+}
